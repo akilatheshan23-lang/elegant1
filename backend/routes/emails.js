@@ -69,11 +69,18 @@ router.get('/threads', async (req, res) => {
         }
       }
       
-      if (email.mood) {
-        threadsMap[email.threadId].dominantMood = email.mood;
+      // Update mood and type ONLY from customer messages (not merchandiser replies)
+      // This ensures thread shows the CUSTOMER's mood, not the merchandiser's polite reply
+      if (email.mood && !email.isReply) {
+        // Angry always takes priority — if any customer email is angry, the thread is angry
+        if (email.mood === 'Angry') {
+          threadsMap[email.threadId].dominantMood = 'Angry';
+        } else if (threadsMap[email.threadId].dominantMood !== 'Angry') {
+          threadsMap[email.threadId].dominantMood = email.mood;
+        }
       }
 
-      if (email.messageType) {
+      if (email.messageType && !email.isReply) {
         threadsMap[email.threadId].messageType = email.messageType;
       }
     }
