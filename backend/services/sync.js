@@ -3,7 +3,13 @@ import Email from '../models/Email.js';
 import { getGmailClient, fetchRecentEmails, getOAuth2Client, parseMessageBody, cleanEmailAddress } from './gmail.js';
 import { analyzeEmail } from './gemini.js';
 
+const accountBackoffs = {};
+
 export const syncEmailsForAccount = async (account) => {
+  if (accountBackoffs[account.email] && Date.now() < accountBackoffs[account.email]) {
+    return { success: true, email: account.email, skipped: true };
+  }
+
   try {
     const oauth2Client = getOAuth2Client();
     oauth2Client.setCredentials({
@@ -218,7 +224,18 @@ export const syncEmailsForAccount = async (account) => {
     }
     return { success: true, email: account.email, added: newEmailsCount };
   } catch (error) {
-    console.error(`Sync failed for ${account.email}:`, error);
+    if (error.status === 429 || error.code === 429 || (error.message && error.message.includes('429'))) {
+      const match = error.message.match(/Retry after (.*)/);
+      if (match && match[1]) {
+        accountBackoffs[account.email] = new Date(match[1]).getTime();
+        console.warn(`[Gmail] Rate limit hit for ${account.email}. Pausing sync until ${match[1]}`);
+      } else {
+        accountBackoffs[account.email] = Date.now() + 15 * 60 * 1000;
+        console.warn(`[Gmail] Rate limit hit for ${account.email}. Pausing sync for 15 minutes.`);
+      }
+    } else {
+      console.error(`Sync failed for ${account.email}:`, error);
+    }
     
     // Only mark account as error (expired) if it's an authentication issue
     const errMsg = (error.message || '').toLowerCase();
