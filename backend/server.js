@@ -44,10 +44,10 @@ setInterval(async () => {
   } finally {
     isSyncing = false;
   }
-}, 15000); // 15 seconds
+}, 60000); // 60 seconds
 
 // Start listening
 app.listen(PORT, () => {
   console.log(`[Elegant AI] 🚀 Server running on port ${PORT}`);
-  console.log(`[Elegant AI] ⚡ Auto-polling: every 15 seconds | Frontend polling: every 2 seconds`);
+  console.log(`[Elegant AI] ⚡ Auto-polling: every 60 seconds | Frontend polling: every 2 seconds`);
 });
