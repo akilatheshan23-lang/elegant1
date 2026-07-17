@@ -642,6 +642,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-glow);
+  flex-shrink: 0;
 }
 
 .ai-suggested-reply::before {
