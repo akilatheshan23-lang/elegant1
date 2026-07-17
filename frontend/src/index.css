@@ -1,30 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --bg-primary: rgba(10, 15, 29, 0.4); /* Translucent dark navy */
-  --bg-secondary: rgba(19, 27, 46, 0.55); /* Translucent slate navy */
-  --bg-tertiary: rgba(30, 41, 66, 0.6); /* High-contrast highlights */
-  --border-color: rgba(255, 255, 255, 0.08); /* Frosted thin border */
-  --text-primary: #f8fafc; /* Silver white primary text */
-  --text-secondary: #94a3b8; /* Slate silver secondary text */
-  --color-primary: #0084ff; /* Vibrant brand blue */
-  --color-primary-hover: #005082;
-  --color-silver: #b5bccc;
-  --color-success: #10b981;
-  --color-success-bg: rgba(16, 185, 129, 0.1);
-  --color-warning: #f59e0b;
-  --color-warning-bg: rgba(245, 158, 11, 0.1);
-  --color-danger: #ef4444;
-  --color-danger-bg: rgba(239, 68, 68, 0.1);
+  /* Premium Glassmorphism Color Palette */
+  --bg-base: #070B14;
+  --bg-primary: rgba(13, 18, 38, 0.45);
+  --bg-secondary: rgba(22, 30, 54, 0.55);
+  --bg-tertiary: rgba(35, 45, 75, 0.65);
+  
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-highlight: rgba(255, 255, 255, 0.12);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+  
+  /* Electric Vibrant Accents */
+  --color-primary: #00F0FF; /* Electric Cyan */
+  --color-primary-glow: rgba(0, 240, 255, 0.4);
+  --color-primary-hover: #00C4D1;
+  
+  --color-secondary: #7000FF; /* Deep Purple */
+  
+  --color-success: #00FF9D; /* Neon Green */
+  --color-success-bg: rgba(0, 255, 157, 0.15);
+  
+  --color-warning: #FFB800; /* Amber Gold */
+  --color-warning-bg: rgba(255, 184, 0, 0.15);
+  
+  --color-danger: #FF0055; /* Neon Pink/Red */
+  --color-danger-bg: rgba(255, 0, 85, 0.15);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #00F0FF 0%, #7000FF 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
   
   --font-sans: 'Outfit', sans-serif;
-  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  --transition-fast: all 0.15s ease-out;
+  
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  
+  --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.15);
+  --shadow-glow-strong: 0 0 30px rgba(0, 240, 255, 0.3);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 * {
@@ -35,7 +56,7 @@
 
 body {
   font-family: var(--font-sans);
-  background: url('/team_thumbsup.jpg') no-repeat center center fixed;
+  background: var(--bg-base) url('/team_thumbsup.jpg') no-repeat center center fixed;
   background-size: cover;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
@@ -52,7 +73,22 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(8, 12, 24, 0.76); /* Frosted dark navy tint cover overlay */
+  background: radial-gradient(circle at top right, rgba(112, 0, 255, 0.15), transparent 40%),
+              radial-gradient(circle at bottom left, rgba(0, 240, 255, 0.1), transparent 40%);
+  z-index: -2;
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(7, 11, 20, 0.82); /* Deep dark overlay */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: -1;
   pointer-events: none;
 }
@@ -61,17 +97,36 @@ button, input, select, textarea {
   font-family: inherit;
 }
 
-/* Glassmorphism style for premium dark mode */
-.glass {
-  background: rgba(19, 27, 46, 0.48);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: var(--bg-primary);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glass);
 }
 
-.glass-hover:hover {
-  border-color: rgba(0, 132, 255, 0.4);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+.glass-card {
+  background: var(--gradient-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-glass);
+  transition: var(--transition);
+}
+
+.glass-card:hover {
+  border-color: var(--glass-highlight);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.1);
+}
+
+.glow-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Custom Scrollbar */
@@ -83,30 +138,68 @@ button, input, select, textarea {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-sm);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
+  box-shadow: var(--shadow-glow);
 }
 
-/* Pulse animation */
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.6; }
 }
 
 .animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Micro-interaction animations */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Button Animations */
 .btn-animate {
   transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.btn-animate::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+@keyframes ripple {
+  0% { transform: scale(0, 0); opacity: 1; }
+  20% { transform: scale(25, 25); opacity: 1; }
+  100% { opacity: 0; transform: scale(40, 40); }
+}
+.btn-animate:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
 }
 .btn-animate:hover {
   transform: translateY(-2px);
 }
 .btn-animate:active {
-  transform: translateY(0);
+  transform: translateY(1px);
 }
