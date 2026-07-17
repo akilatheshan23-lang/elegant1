@@ -142,10 +142,10 @@ function App() {
   useEffect(() => {
     fetchData();
 
-    // Automatically check for new synced emails silently every 2 seconds for very fast updates
+    // Automatically check for new synced emails silently every 3 seconds for fast updates
     const interval = setInterval(() => {
       fetchData(false);
-    }, 2000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);

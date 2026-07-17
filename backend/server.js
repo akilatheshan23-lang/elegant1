@@ -7,6 +7,8 @@ import authRoutes from './routes/auth.js';
 import emailRoutes from './routes/emails.js';
 import analyticsRoutes from './routes/analytics.js';
 import { syncAllAccounts } from './services/sync.js';
+import Account from './models/Account.js';
+import { syncEmailsForAccount } from './services/sync.js';
 
 // Load environment variables
 dotenv.config();
@@ -31,23 +33,68 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date() });
 });
 
-// Real-time automatic background polling loop (runs every 2 seconds)
-console.log('[Elegant AI] ⚡ Initializing ultra-fast background email polling (2s interval)...');
-let isSyncing = false;
-setInterval(async () => {
-  if (isSyncing) return; // Previous sync still running, skip silently
-  isSyncing = true;
+// ─── SMART PER-ACCOUNT POLLING ENGINE ───
+// Business/Workspace accounts: poll every 10 seconds (high quota)
+// Personal Gmail accounts: poll every 45 seconds (strict quota)
+// This prevents personal accounts from getting rate-limited while
+// keeping business accounts ultra-fast.
+
+const BUSINESS_INTERVAL = 10000;  // 10 seconds for business accounts
+const PERSONAL_INTERVAL = 45000;  // 45 seconds for personal Gmail
+
+const accountSyncLocks = {};
+
+const syncSingleAccount = async (account) => {
+  const email = account.email;
+  if (accountSyncLocks[email]) return; // Already syncing
+  accountSyncLocks[email] = true;
   try {
-    await syncAllAccounts();
+    await syncEmailsForAccount(account);
   } catch (error) {
-    console.error(`[Sync Loop] Background sync failed:`, error);
+    console.error(`[Sync] Error syncing ${email}:`, error.message);
   } finally {
-    isSyncing = false;
+    accountSyncLocks[email] = false;
   }
-}, 60000); // 60 seconds
+};
+
+const isBusinessAccount = (email) => {
+  // Personal Gmail ends with @gmail.com or @googlemail.com
+  const personal = ['@gmail.com', '@googlemail.com'];
+  return !personal.some(suffix => email.toLowerCase().endsWith(suffix));
+};
+
+// Start the smart polling engine
+const startSmartPolling = async () => {
+  console.log('[Elegant AI] ⚡ Starting Smart Polling Engine...');
+  console.log(`[Elegant AI] 🏢 Business accounts: every ${BUSINESS_INTERVAL / 1000}s`);
+  console.log(`[Elegant AI] 📧 Personal accounts: every ${PERSONAL_INTERVAL / 1000}s`);
+
+  const accounts = await Account.find({ status: { $ne: 'expired' } });
+  
+  for (const account of accounts) {
+    const interval = isBusinessAccount(account.email) ? BUSINESS_INTERVAL : PERSONAL_INTERVAL;
+    const type = isBusinessAccount(account.email) ? '🏢 Business' : '📧 Personal';
+    console.log(`[Elegant AI] ${type} ${account.email} → polling every ${interval / 1000}s`);
+    
+    // Initial sync immediately
+    syncSingleAccount(account);
+    
+    // Then set up per-account interval
+    setInterval(async () => {
+      // Re-fetch account to get latest tokens
+      const freshAccount = await Account.findById(account._id);
+      if (freshAccount && freshAccount.status !== 'expired') {
+        syncSingleAccount(freshAccount);
+      }
+    }, interval);
+  }
+};
+
+// Wait for DB connection, then start polling
+setTimeout(startSmartPolling, 3000);
 
 // Start listening
 app.listen(PORT, () => {
   console.log(`[Elegant AI] 🚀 Server running on port ${PORT}`);
-  console.log(`[Elegant AI] ⚡ Auto-polling: every 60 seconds | Frontend polling: every 2 seconds`);
+  console.log(`[Elegant AI] ⚡ Smart per-account polling active | Frontend polling: every 2 seconds`);
 });
