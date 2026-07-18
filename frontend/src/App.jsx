@@ -472,7 +472,7 @@ function App() {
             <h1>
               {activeTab === 'overview' && 'Overview Analytics'}
               {activeTab === 'inbox' && 'Merchandiser Inbox Monitor'}
-              {activeTab === 'integrations' && 'Gmail API Connections'}
+              {activeTab === 'integrations' && 'Gmail Connections'}
             </h1>
           </div>
           
