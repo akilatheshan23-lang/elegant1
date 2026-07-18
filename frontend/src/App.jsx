@@ -118,8 +118,8 @@ function App() {
   const fetchData = async (showLoading = true) => {
     if (showLoading) setLoading(true);
     try {
-      // Add a 30-second timeout to prevent infinite hanging if the server is frozen
-      const axiosConfig = { timeout: 30000 };
+      // Add a 90-second timeout to give Render's free tier enough time to wake up from sleep (takes up to 60s)
+      const axiosConfig = { timeout: 90000 };
       const [analyticsRes, threadsRes, accountsRes] = await Promise.all([
         axios.get(`${API_BASE}/analytics`, axiosConfig),
         axios.get(`${API_BASE}/emails/threads`, axiosConfig),
@@ -137,7 +137,7 @@ function App() {
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
       if (err.code === 'ECONNABORTED') {
-        showNotification('Server connection timed out (took >30s). Is the backend running?', 'error');
+        showNotification('Server connection timed out. If on free hosting, it may need more time to wake up.', 'error');
       }
     } finally {
       if (showLoading) setLoading(false);
