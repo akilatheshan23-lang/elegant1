@@ -488,7 +488,10 @@ function App() {
           {loading ? (
             <div className="loading-overlay">
               <div className="spinner" />
-              <p>Fetching metrics from MERN server...</p>
+              <div className="loading-text-container" style={{ textAlign: 'center' }}>
+                <p style={{ marginBottom: '0.5rem' }}>Connecting to backend server...</p>
+                <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>(If the server was asleep, waking it up may take up to 60 seconds)</p>
+              </div>
             </div>
           ) : !analytics ? (
             <div className="glass empty-state" style={{ margin: '2rem auto', maxWidth: '600px', background: 'rgba(19, 27, 46, 0.7)' }}>
