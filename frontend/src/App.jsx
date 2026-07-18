@@ -451,14 +451,20 @@ function App() {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="footer-connection">
-            <span className={`status-indicator ${accounts.length > 0 ? 'status-active' : 'status-idle'}`} />
-            <span>{accounts.length} Accounts Connected</span>
+          <div className="account-status">
+            <span className={`status-dot ${accounts.length > 0 ? 'active' : ''}`}></span>
+            {accounts.length} Accounts Connected
           </div>
+          {!loading && analytics && (
+            <div className="cloud-status" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px', fontSize: '0.8rem', color: '#10b981' }}>
+              <span className="status-dot active" style={{ background: '#10b981', boxShadow: '0 0 8px #10b981' }}></span>
+              Cloud Backend Online
+            </div>
+          )}
         </div>
       </aside>
 
-      {/* Main Container */}
+      {/* Main Content Area */}
       <main className="main-content">
         {/* Header/Top Bar */}
         <header className="top-bar">
