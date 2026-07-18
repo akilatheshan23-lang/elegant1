@@ -135,10 +135,7 @@ function App() {
         setSelectedThreadId(prev => prev ? prev : threadsRes.data[0].threadId);
       }
     } catch (err) {
-      console.error('Error fetching dashboard data:', err);
-      if (err.code === 'ECONNABORTED') {
-        showNotification('Server connection timed out. If on free hosting, it may need more time to wake up.', 'error');
-      }
+      // Silently catch timeouts so the user doesn't get annoying pop-ups
     } finally {
       if (showLoading) setLoading(false);
     }
