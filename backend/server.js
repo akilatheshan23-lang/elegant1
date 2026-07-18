@@ -40,7 +40,7 @@ app.get('/health', (req, res) => {
 // keeping business accounts ultra-fast.
 
 const BUSINESS_INTERVAL = 10000;  // 10 seconds for business accounts
-const PERSONAL_INTERVAL = 45000;  // 45 seconds for personal Gmail
+const PERSONAL_INTERVAL = 10000;  // 10 seconds for personal Gmail (ultra-fast)
 
 const accountSyncLocks = {};
 
@@ -69,24 +69,42 @@ const startSmartPolling = async () => {
   console.log(`[Elegant AI] 🏢 Business accounts: every ${BUSINESS_INTERVAL / 1000}s`);
   console.log(`[Elegant AI] 📧 Personal accounts: every ${PERSONAL_INTERVAL / 1000}s`);
 
-  const accounts = await Account.find({ status: { $ne: 'expired' } });
-  
-  for (const account of accounts) {
-    const interval = isBusinessAccount(account.email) ? BUSINESS_INTERVAL : PERSONAL_INTERVAL;
-    const type = isBusinessAccount(account.email) ? '🏢 Business' : '📧 Personal';
-    console.log(`[Elegant AI] ${type} ${account.email} → polling every ${interval / 1000}s`);
-    
-    // Initial sync immediately
-    syncSingleAccount(account);
-    
-    // Then set up per-account interval
-    setInterval(async () => {
-      // Re-fetch account to get latest tokens
-      const freshAccount = await Account.findById(account._id);
-      if (freshAccount && freshAccount.status !== 'expired') {
-        syncSingleAccount(freshAccount);
+  // Business Polling Loop
+  setInterval(async () => {
+    try {
+      const accounts = await Account.find({ status: { $ne: 'expired' } });
+      for (const account of accounts) {
+        if (isBusinessAccount(account.email)) {
+          syncSingleAccount(account);
+        }
       }
-    }, interval);
+    } catch (err) {
+      console.error('[Sync] Error in business polling loop:', err.message);
+    }
+  }, BUSINESS_INTERVAL);
+
+  // Personal Polling Loop
+  setInterval(async () => {
+    try {
+      const accounts = await Account.find({ status: { $ne: 'expired' } });
+      for (const account of accounts) {
+        if (!isBusinessAccount(account.email)) {
+          syncSingleAccount(account);
+        }
+      }
+    } catch (err) {
+      console.error('[Sync] Error in personal polling loop:', err.message);
+    }
+  }, PERSONAL_INTERVAL);
+
+  // Trigger an immediate sync on startup for all
+  try {
+    const accounts = await Account.find({ status: { $ne: 'expired' } });
+    for (const account of accounts) {
+      syncSingleAccount(account);
+    }
+  } catch (err) {
+    console.error('[Sync] Error during initial startup sync:', err.message);
   }
 };
 
