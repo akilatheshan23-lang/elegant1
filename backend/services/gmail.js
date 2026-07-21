@@ -2,16 +2,13 @@ import { google } from 'googleapis';
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '715303954771-8d8s500rqmc2oj96saq1d97abh6m95tc.apps.googleusercontent.com';
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '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';
-const REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI && process.env.GOOGLE_REDIRECT_URI.includes('onrender.com') 
-  ? process.env.GOOGLE_REDIRECT_URI 
-  : 'https://elegant-backend.onrender.com/api/auth/google/callback';
-
-export const getOAuth2Client = () => {
-  return new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+export const getOAuth2Client = (redirectUri) => {
+  const uri = redirectUri || process.env.GOOGLE_REDIRECT_URI || 'https://elegant1-snza.onrender.com/api/auth/google/callback';
+  return new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, uri);
 };
 
-export const getAuthUrl = () => {
-  const oauth2Client = getOAuth2Client();
+export const getAuthUrl = (redirectUri) => {
+  const oauth2Client = getOAuth2Client(redirectUri);
   const scopes = [
     'https://www.googleapis.com/auth/gmail.readonly',
     'https://www.googleapis.com/auth/userinfo.email',
@@ -24,8 +21,8 @@ export const getAuthUrl = () => {
   });
 };
 
-export const getTokens = async (code) => {
-  const oauth2Client = getOAuth2Client();
+export const getTokens = async (code, redirectUri) => {
+  const oauth2Client = getOAuth2Client(redirectUri);
   const { tokens } = await oauth2Client.getToken(code);
   return tokens;
 };
