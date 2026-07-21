@@ -5,10 +5,18 @@ import Account from '../models/Account.js';
 
 const router = express.Router();
 
+// Helper to generate dynamic redirect URI
+const getDynamicRedirectUri = (req) => {
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+  const host = req.get('host');
+  return `${protocol}://${host}/api/auth/google/callback`;
+};
+
 // GET /api/auth/google/url - Get Google consent page URL
 router.get('/google/url', (req, res) => {
   try {
-    const url = getAuthUrl();
+    const redirectUri = getDynamicRedirectUri(req);
+    const url = getAuthUrl(redirectUri);
     res.json({ url });
   } catch (error) {
     res.status(500).json({ error: 'Failed to generate OAuth URL', details: error.message });
@@ -25,7 +33,8 @@ router.get('/google/callback', async (req, res) => {
   }
 
   try {
-    const tokens = await getTokens(code);
+    const redirectUri = getDynamicRedirectUri(req);
+    const tokens = await getTokens(code, redirectUri);
     
     // Get user info to retrieve email address
     const oauth2Client = getOAuth2Client();
