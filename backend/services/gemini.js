@@ -6,7 +6,7 @@ const getGroqClient = () => {
   if (groqClient) return groqClient;
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    console.warn('[Elegant AI] GROQ_API_KEY is not defined. Falling back to rule-based analysis.');
+    console.warn('[Vaisra AI] GROQ_API_KEY is not defined. Falling back to rule-based analysis.');
     return null;
   }
   groqClient = new Groq({ apiKey });
@@ -14,10 +14,10 @@ const getGroqClient = () => {
 };
 
 // ─── System Prompt: Deep merchandising domain expertise ───
-const SYSTEM_PROMPT = `You are "Elegant AI", the intelligent email analysis engine for Elegant Knitting International (Pvt) Ltd — a Sri Lankan B2B garment knitting and merchandising company.
+const SYSTEM_PROMPT = `You are "Vaisra AI", the intelligent email analysis engine for Vaisra Apparel — a Sri Lankan B2B garment knitting and merchandising company.
 
 ## Your Company Context
-- Elegant Knitting manufactures knitted garments (sweaters, cardigans, polo shirts, activewear, jacquard knitwear) for international fashion buyers and retailers.
+- Vaisra Apparel manufactures knitted garments (sweaters, cardigans, polo shirts, activewear, jacquard knitwear) for international fashion buyers and retailers.
 - The merchandisers handle buyer communications: order inquiries, sample approvals, production status updates, quality complaints, shipment tracking, and pricing negotiations.
 - Key buyers are from USA, Europe, Australia, Japan, and the Middle East.
 
@@ -27,7 +27,7 @@ You analyze every incoming and outgoing email to classify it accurately. You mus
 2. **Assess Priority** — Urgent matters (delivery deadlines, quality defects, canceled orders, compliance issues) are always HIGH. Routine follow-ups and thank-you notes are LOW.
 3. **Classify Type** — Understand the merchandising workflow to correctly categorize emails.
 4. **Summarize** — Write a crisp, actionable one-line summary a manager can scan in 2 seconds.
-5. **Draft Reply** — Write a professional, warm, solution-oriented reply from the Elegant Knitting merchandising team. Include specific next steps when possible.
+5. **Draft Reply** — Write a professional, warm, solution-oriented reply from the Vaisra Apparel merchandising team. Include specific next steps when possible.
 
 ## Classification Rules
 
@@ -48,7 +48,7 @@ You analyze every incoming and outgoing email to classify it accurately. You mus
 
 ## Reply Guidelines
 - Always address the buyer by their first name
-- Sign off as "Elegant Knitting Team" or "Elegant Knitting Merchandising"
+- Sign off as "Vaisra Apparel Team" or "Vaisra Apparel Merchandising"
 - Be solution-focused: if there's a problem, propose a fix
 - Be specific: mention order numbers, dates, and quantities when they appear in the email
 - Keep replies concise (3-5 sentences) but complete
@@ -130,19 +130,19 @@ Return ONLY the JSON object.`;
       ? parsed.suggestedReply
       : generateFallbackReply(sender, subject, mood, priority);
 
-    console.log(`[Elegant AI] ✅ ${subject} → Mood: ${mood} | Priority: ${priority} | Type: ${messageType}`);
+    console.log(`[Vaisra AI] ✅ ${subject} → Mood: ${mood} | Priority: ${priority} | Type: ${messageType}`);
 
     return { mood, priority, messageType, summary, suggestedReply };
   } catch (error) {
     // Handle token limit errors specifically — use rule-based instead of retrying
     if (error.status === 413 || (error.message && error.message.includes('too large'))) {
-      console.warn(`[Elegant AI] ⚠️ Message too large for AI, using smart fallback for "${subject}"`);
+      console.warn(`[Vaisra AI] ⚠️ Message too large for AI, using smart fallback for "${subject}"`);
       return getRuleBasedAnalysis(subject, sender, body);
     }
 
     // Retry once on rate limits or server errors
     if (error.status === 429 || error.status >= 500) {
-      console.warn(`[Elegant AI] Rate limit or server error, retrying in 1s...`);
+      console.warn(`[Vaisra AI] Rate limit or server error, retrying in 1s...`);
       await new Promise(r => setTimeout(r, 1000));
       try {
         const retryCompletion = await client.chat.completions.create({
@@ -160,17 +160,17 @@ Return ONLY the JSON object.`;
         const mood = ['Angry', 'Neutral', 'Happy'].includes(retryParsed.mood) ? retryParsed.mood : 'Neutral';
         const priority = ['High', 'Medium', 'Low'].includes(retryParsed.priority) ? retryParsed.priority : 'Medium';
         const messageType = ['Inquiry / Letter', 'Production Update', 'Image & Sample Approval'].includes(retryParsed.messageType) ? retryParsed.messageType : 'Inquiry / Letter';
-        console.log(`[Elegant AI] ✅ Retry success: ${subject} → Mood: ${mood}`);
+        console.log(`[Vaisra AI] ✅ Retry success: ${subject} → Mood: ${mood}`);
         return {
           mood, priority, messageType,
           summary: retryParsed.summary || `Email regarding: ${subject || 'general inquiry'}`,
           suggestedReply: retryParsed.suggestedReply || generateFallbackReply(sender, subject, mood, priority),
         };
       } catch (retryErr) {
-        console.error(`[Elegant AI] ❌ Retry also failed:`, retryErr.message);
+        console.error(`[Vaisra AI] ❌ Retry also failed:`, retryErr.message);
       }
     }
-    console.error(`[Elegant AI] ❌ Error analyzing "${subject}":`, error.message);
+    console.error(`[Vaisra AI] ❌ Error analyzing "${subject}":`, error.message);
     return getRuleBasedAnalysis(subject, sender, body);
   }
 };
@@ -180,15 +180,15 @@ const generateFallbackReply = (sender, subject, mood, priority) => {
   const name = sender.split(/[<(]/)[0].trim().split(' ')[0] || 'Valued Customer';
 
   if (mood === 'Angry') {
-    return `Dear ${name},\n\nWe sincerely apologize for the inconvenience regarding "${subject}". We are treating this as our top priority and our merchandising team is already investigating. We will provide you with a full update within the next few hours.\n\nBest regards,\nElegant Knitting Merchandising`;
+    return `Dear ${name},\n\nWe sincerely apologize for the inconvenience regarding "${subject}". We are treating this as our top priority and our merchandising team is already investigating. We will provide you with a full update within the next few hours.\n\nBest regards,\nVaisra Apparel Merchandising`;
   }
   if (mood === 'Happy') {
-    return `Dear ${name},\n\nThank you so much for your kind feedback! Our team at Elegant Knitting is delighted to hear this. We truly value your partnership and look forward to continuing to deliver excellence.\n\nWarm regards,\nElegant Knitting Merchandising`;
+    return `Dear ${name},\n\nThank you so much for your kind feedback! Our team at Vaisra Apparel is delighted to hear this. We truly value your partnership and look forward to continuing to deliver excellence.\n\nWarm regards,\nVaisra Apparel Merchandising`;
   }
   if (priority === 'High') {
-    return `Dear ${name},\n\nThank you for bringing this to our attention. We understand the urgency and our merchandising team is on it immediately. We will follow up with a detailed update shortly.\n\nBest regards,\nElegant Knitting Merchandising`;
+    return `Dear ${name},\n\nThank you for bringing this to our attention. We understand the urgency and our merchandising team is on it immediately. We will follow up with a detailed update shortly.\n\nBest regards,\nVaisra Apparel Merchandising`;
   }
-  return `Dear ${name},\n\nThank you for your email regarding "${subject}". Our merchandising team has reviewed your inquiry and will respond with the requested details shortly.\n\nBest regards,\nElegant Knitting Merchandising`;
+  return `Dear ${name},\n\nThank you for your email regarding "${subject}". Our merchandising team has reviewed your inquiry and will respond with the requested details shortly.\n\nBest regards,\nVaisra Apparel Merchandising`;
 };
 
 // ─── Rule-Based Fallback Analysis (when API is unavailable) ───

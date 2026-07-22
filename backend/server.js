@@ -65,9 +65,9 @@ const isBusinessAccount = (email) => {
 
 // Start the smart polling engine
 const startSmartPolling = async () => {
-  console.log('[Elegant AI] ⚡ Starting Smart Polling Engine...');
-  console.log(`[Elegant AI] 🏢 Business accounts: every ${BUSINESS_INTERVAL / 1000}s`);
-  console.log(`[Elegant AI] 📧 Personal accounts: every ${PERSONAL_INTERVAL / 1000}s`);
+  console.log('[Vaisra AI] ⚡ Starting Smart Polling Engine...');
+  console.log(`[Vaisra AI] 🏢 Business accounts: every ${BUSINESS_INTERVAL / 1000}s`);
+  console.log(`[Vaisra AI] 📧 Personal accounts: every ${PERSONAL_INTERVAL / 1000}s`);
 
   // Business Polling Loop
   setInterval(async () => {
@@ -113,6 +113,6 @@ setTimeout(startSmartPolling, 3000);
 
 // Start listening
 app.listen(PORT, () => {
-  console.log(`[Elegant AI] 🚀 Server running on port ${PORT}`);
-  console.log(`[Elegant AI] ⚡ Smart per-account polling active | Frontend polling: every 2 seconds`);
+  console.log(`[Vaisra AI] 🚀 Server running on port ${PORT}`);
+  console.log(`[Vaisra AI] ⚡ Smart per-account polling active | Frontend polling: every 2 seconds`);
 });

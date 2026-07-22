@@ -1,0 +1,24 @@
+<svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCEABB" />
+      <stop offset="50%" stop-color="#F8B500" />
+      <stop offset="100%" stop-color="#B38100" />
+    </linearGradient>
+  </defs>
+  
+  <g transform="translate(10, 10)">
+    <!-- Left broken horizontal bar -->
+    <polygon points="0,15 25,15 38,35 20,35" fill="url(#gold)" />
+    <!-- Left diagonal down to vertex -->
+    <polygon points="25,42 42,42 55,62 35,62" fill="url(#gold)" />
+    <!-- Main Right wing of V -->
+    <polygon points="45,62 58,62 85,15 70,15" fill="url(#gold)" />
+    <!-- Arrow Head on right wing -->
+    <polygon points="65,0 95,0 85,25" fill="url(#gold)" />
+  </g>
+  
+  <!-- Text -->
+  <text x="120" y="45" font-family="'Inter', 'Segoe UI', sans-serif" font-weight="800" font-size="34" fill="url(#gold)" letter-spacing="5">VAISRA</text>
+  <text x="122" y="68" font-family="'Inter', 'Segoe UI', sans-serif" font-weight="600" font-size="13" fill="#9ca3af" letter-spacing="10">APPAREL</text>
+</svg>
