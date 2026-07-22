@@ -1,7 +1,7 @@
 {
   "name": "elegant-email-backend",
   "version": "1.0.0",
-  "description": "Backend service for Vaisra Apparel Email Monitoring",
+  "description": "Backend service for Elegant Knitting Email Monitoring",
   "main": "server.js",
   "type": "module",
   "scripts": {

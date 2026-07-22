@@ -415,7 +415,7 @@ function App() {
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="logo-section" style={{ display: 'flex', justifyContent: 'center', padding: '1rem 1.5rem' }}>
-          <img src="/logo.svg" alt="Vaisra Apparel" style={{ maxWidth: '100%', height: 'auto', maxHeight: '55px', objectFit: 'contain' }} />
+          <img src="/logo.png" alt="Elegant Knitting International" style={{ maxWidth: '100%', height: 'auto', maxHeight: '55px', objectFit: 'contain' }} />
         </div>
 
         <nav className="nav-menu">
@@ -841,7 +841,7 @@ function App() {
                         <div className="ai-summary-card">
                           <div className="ai-card-title">
                             <Sparkles size={14} />
-                            Vaisra AI Incident Summary
+                            Elegant AI Incident Summary
                           </div>
                           <p style={{ fontSize: '0.95rem', lineHeight: '1.5' }}>
                             {selectedThread.emails[selectedThread.emails.length - 1].summary}
@@ -857,7 +857,7 @@ function App() {
                             Recommended Response Draft
                           </div>
                           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
-                            Quickly draft a response using Vaisra AI's tailor-made proposal.
+                            Quickly draft a response using Elegant AI's tailor-made proposal.
                           </p>
                           <div className="reply-text-box">
                             {selectedThread.emails[selectedThread.emails.length - 1].suggestedReply}
@@ -929,7 +929,7 @@ function App() {
                   <div className="empty-state">
                     <Mail className="empty-icon animate-pulse" size={48} />
                     <h2>Select an Email Thread</h2>
-                    <p>Select a message thread from the listing to examine customer inquiry and generate automated Vaisra AI responses.</p>
+                    <p>Select a message thread from the listing to examine customer inquiry and generate automated Elegant AI responses.</p>
                   </div>
                 )}
               </div>

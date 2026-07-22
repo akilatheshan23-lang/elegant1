@@ -177,8 +177,8 @@ router.post('/mock', async (req, res) => {
         messageId: 'mock_msg_101',
         threadId: 'mock_thread_101',
         sender: 'John Miller <john.miller@usaretailers.com>',
-        receiver: 'akilavaisra@gmail.com',
-        subject: 'URGENT: Sample approval for Vaisra Apparel order #EK-2026',
+        receiver: 'akilaelegant@gmail.com',
+        subject: 'URGENT: Sample approval for Elegant Knitting order #EK-2026',
         body: 'Dear Akila, We are waiting for the final sample approval of the knitted jacquard sweaters under order #EK-2026. The shipment schedule is very tight, and if we do not approve the samples by tomorrow, we will miss our fall launch. Please send the high-res photos and courier tracking number immediately.',
         receivedAt: new Date(Date.now() - 2.5 * 3600 * 1000), // 2.5 hrs ago
         mood: 'Angry',
@@ -191,9 +191,9 @@ router.post('/mock', async (req, res) => {
         messageId: 'mock_msg_102',
         threadId: 'mock_thread_102',
         sender: 'Sophie Laurent <sophie@parisboutique.fr>',
-        receiver: 'akilavaisra@gmail.com',
+        receiver: 'akilaelegant@gmail.com',
         subject: 'Feedback: Cardigans shipment arrived at Paris Boutique!',
-        body: 'Hello Akila, I wanted to let you know that the container of cotton knit cardigans arrived yesterday. The silver linings look extremely elegant and the hand-feel of the yarn is exactly what our customers wanted. Excellent work by the Vaisra Apparel team. We are drafting the next order sheet for 2,000 units.',
+        body: 'Hello Akila, I wanted to let you know that the container of cotton knit cardigans arrived yesterday. The silver linings look extremely elegant and the hand-feel of the yarn is exactly what our customers wanted. Excellent work by the Elegant Knitting team. We are drafting the next order sheet for 2,000 units.',
         receivedAt: new Date(Date.now() - 5 * 3600 * 1000), // 5 hrs ago
         mood: 'Happy',
         priority: 'Low',
@@ -207,14 +207,14 @@ router.post('/mock', async (req, res) => {
         messageId: 'mock_msg_103',
         threadId: 'mock_thread_103',
         sender: 'Kenji Sato <sato@tokyo-active.jp>',
-        receiver: 'akilavaisra@gmail.com',
+        receiver: 'akilaelegant@gmail.com',
         subject: 'Inquiry: Bamboo fiber knit fabric specs',
-        body: 'Dear Akila, We are designing a new sportswear line and want to inquire if Vaisra Apparel can knit bamboo fiber blends. What is the minimum order quantity (MOQ) for bamboo-cotton blends and what fabric weight (GSM) options do you support? Best regards, Sato.',
+        body: 'Dear Akila, We are designing a new sportswear line and want to inquire if Elegant Knitting can knit bamboo fiber blends. What is the minimum order quantity (MOQ) for bamboo-cotton blends and what fabric weight (GSM) options do you support? Best regards, Sato.',
         receivedAt: new Date(Date.now() - 18 * 3600 * 1000), // 18 hrs ago
         mood: 'Neutral',
         priority: 'Medium',
         summary: 'Kenji Sato inquires about bamboo fiber blends fabric options, MOQ, and GSM weights for a new sports design.',
-        suggestedReply: 'Dear Sato-san, Thank you for contacting Vaisra Apparel. Yes, we support bamboo-cotton blends (typically 70/30 ratios). Our MOQ is 500kg per dye batch, and we can knit weights from 140 GSM to 280 GSM. I am emailing our digital catalog and yarn technical sheets now.',
+        suggestedReply: 'Dear Sato-san, Thank you for contacting Elegant Knitting. Yes, we support bamboo-cotton blends (typically 70/30 ratios). Our MOQ is 500kg per dye batch, and we can knit weights from 140 GSM to 280 GSM. I am emailing our digital catalog and yarn technical sheets now.',
         status: 'Responded',
         respondedAt: new Date(Date.now() - 16 * 3600 * 1000), // replied in 2 hours
         responseTime: 120,
@@ -223,7 +223,7 @@ router.post('/mock', async (req, res) => {
         messageId: 'mock_msg_104',
         threadId: 'mock_thread_104',
         sender: 'Marcus Aurelius <marcus@nordicfashion.se>',
-        receiver: 'akilavaisra@gmail.com',
+        receiver: 'akilaelegant@gmail.com',
         subject: 'Quality Issue: Defective necklines in V-neck knitwear order #EK-3012',
         body: 'Hello Akila, We received V-neck sweaters under order #EK-3012 today. While inspecting, we noticed that around 15% of the garments have loose threads around the collar, making them look unfinished. This is a quality assurance failure. How do you intend to compensate us for this? We cannot sell these.',
         receivedAt: new Date(Date.now() - 28 * 3600 * 1000), // 28 hrs ago
@@ -237,7 +237,7 @@ router.post('/mock', async (req, res) => {
         messageId: 'mock_msg_105',
         threadId: 'mock_thread_105',
         sender: 'Sarah Jenkins <s.jenkins@activewear.au>',
-        receiver: 'akilavaisra@gmail.com',
+        receiver: 'akilaelegant@gmail.com',
         subject: 'Updates on Fall Jacquard sample swatches?',
         body: 'Hi Akila, just checking if you have sample swatches ready for the new Fall Jacquard patterns. You mentioned last week that they would be ready for dispatch by today. Please send tracking if they are on the way.',
         receivedAt: new Date(Date.now() - 44 * 3600 * 1000), // 44 hrs ago
@@ -253,7 +253,7 @@ router.post('/mock', async (req, res) => {
       {
         messageId: 'mock_reply_102',
         threadId: 'mock_thread_102',
-        sender: 'akilavaisra@gmail.com',
+        sender: 'akilaelegant@gmail.com',
         receiver: 'Sophie Laurent <sophie@parisboutique.fr>',
         subject: 'Re: Feedback: Cardigans shipment arrived at Paris Boutique!',
         body: 'Dear Sophie, Thank you so much for your wonderful feedback! The knitting and QC teams are thrilled to hear that the cardigans exceeded your expectations. We look forward to receiving your new order details and will pre-book production slots for you. Best regards.',
@@ -265,10 +265,10 @@ router.post('/mock', async (req, res) => {
       {
         messageId: 'mock_reply_103',
         threadId: 'mock_thread_103',
-        sender: 'akilavaisra@gmail.com',
+        sender: 'akilaelegant@gmail.com',
         receiver: 'Kenji Sato <sato@tokyo-active.jp>',
         subject: 'Re: Inquiry: Bamboo fiber knit fabric specs',
-        body: 'Dear Sato-san, Thank you for contacting Vaisra Apparel. Yes, we support bamboo-cotton blends (typically 70/30 ratios). Our MOQ is 500kg per dye batch, and we can knit weights from 140 GSM to 280 GSM. I am emailing our digital catalog and yarn technical sheets now.',
+        body: 'Dear Sato-san, Thank you for contacting Elegant Knitting. Yes, we support bamboo-cotton blends (typically 70/30 ratios). Our MOQ is 500kg per dye batch, and we can knit weights from 140 GSM to 280 GSM. I am emailing our digital catalog and yarn technical sheets now.',
         receivedAt: new Date(Date.now() - 16 * 3600 * 1000), // replied in 2 hours
         status: 'Responded',
         isReply: true,
@@ -277,7 +277,7 @@ router.post('/mock', async (req, res) => {
       {
         messageId: 'mock_reply_105',
         threadId: 'mock_thread_105',
-        sender: 'akilavaisra@gmail.com',
+        sender: 'akilaelegant@gmail.com',
         receiver: 'Sarah Jenkins <s.jenkins@activewear.au>',
         subject: 'Re: Updates on Fall Jacquard sample swatches?',
         body: 'Hi Sarah, Yes, the jacquard sample swatches were dispatched via DHL Express this morning. The tracking number is DHL-92817452. They should arrive in Sydney by Friday. Let me know if you need anything else.',
@@ -291,7 +291,7 @@ router.post('/mock', async (req, res) => {
         messageId: 'mock_msg_201',
         threadId: 'mock_thread_201',
         sender: 'Theshan Akila <akilatheshan23@gmail.com>',
-        receiver: 'akilavaisra@gmail.com',
+        receiver: 'akilaelegant@gmail.com',
         subject: 'Office work',
         body: 'What the fuck this work?',
         receivedAt: new Date(Date.now() - 6 * 3600 * 1000),
@@ -306,7 +306,7 @@ router.post('/mock', async (req, res) => {
       {
         messageId: 'mock_msg_202',
         threadId: 'mock_thread_201',
-        sender: 'akilavaisra@gmail.com',
+        sender: 'akilaelegant@gmail.com',
         receiver: 'Theshan Akila <akilatheshan23@gmail.com>',
         subject: 'Re: Office work',
         body: 'ok sorry',
@@ -318,7 +318,7 @@ router.post('/mock', async (req, res) => {
       {
         messageId: 'mock_msg_203',
         threadId: 'mock_thread_201',
-        sender: 'akilavaisra@gmail.com',
+        sender: 'akilaelegant@gmail.com',
         receiver: 'Theshan Akila <akilatheshan23@gmail.com>',
         subject: 'Re: Office work',
         body: 'ok buddy witee',
